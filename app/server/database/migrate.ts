@@ -1,4 +1,4 @@
-import { pool, query } from "../providers/psql.js";
+import { pool, query, transaction } from "../providers/psql.js";
 import { migrations } from "./migrations.js";
 
 async function ensureMigrationsTable() {
@@ -35,21 +35,19 @@ async function run() {
 
         await pool.query("BEGIN");
 
-        try {
-            await migration.up();
+        await transaction(async (query) => {
+            await migration.up(query);
 
-            await pool.query(
-                `INSERT INTO migrations (name) VALUES ($1)`,
+            await query(
+                `
+                INSERT INTO migrations (name)
+                VALUES ($1)
+                `,
                 [migration.name]
             );
+        });
 
-            await pool.query("COMMIT");
-
-            console.log(`Concluída: ${migration.name}`);
-        } catch (error) {
-            await pool.query("ROLLBACK");
-            throw error;
-        }
+        console.log(`Concluída: ${migration.name}`);
     }
 
     await pool.end();

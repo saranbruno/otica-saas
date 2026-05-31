@@ -65,8 +65,7 @@ services:
       - "redis_data:/data"
 
   db:
-    image: postgres:17
-    container_name: franqueado
+    image: postgres:18.4
     ports:
       - "5432:5432"
     restart: unless-stopped
