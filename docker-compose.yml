@@ -1,0 +1,82 @@
+name: otica-saas
+
+services:
+  server:
+    image: otica-saas:dev
+    ports:
+      - "80"
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./infra/docker/Dockerfile.server
+    networks:
+      otica-saas-net:
+        aliases:
+          - server
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - .env
+    volumes:
+      - .:/var/www/html
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "15672:15672"
+    networks:
+      otica-saas-net:
+        aliases:
+          - rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:8.6-alpine
+    networks:
+      otica-saas-net:
+        aliases:
+          - redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - "redis_data:/data"
+
+  db:
+    image: postgres:17
+    container_name: franqueado
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    volumes:
+      - "db_data:/var/lib/postgresql/data"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: "${DB_NAME}"
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+    networks:
+      otica-saas-net:
+        aliases:
+          - db
+
+volumes:
+  redis_data:
+    driver: local
+  db_data:
+    driver: local
+
+networks:
+  otica-saas-net:
+    name: otica-saas-net
+    driver: bridge
