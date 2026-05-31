@@ -70,7 +70,7 @@ services:
       - "5432:5432"
     restart: unless-stopped
     volumes:
-      - "db_data:/var/lib/postgresql/data"
+      - "db_data:/var/lib/postgresql"
     env_file:
       - .env
     environment:

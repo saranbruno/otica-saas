@@ -7,9 +7,9 @@
   "scripts": {
     "dev": "tsx watch app/server/server.ts",
     "dev-worker": "tsx watch app/server/queue/registry.ts",
-    "db:migrate": "tsx src/server/database/migrate.ts",
-    "db:rollback": "tsx src/server/database/rollback.ts",
-    "db:seed": "tsx src/server/database/seed.ts"
+    "db:migrate": "tsx app/server/database/migrate.ts",
+    "db:rollback": "tsx app/server/database/rollback.ts",
+    "db:seed": "tsx app/server/database/seed.ts"
   },
   "keywords": [],
   "author": "",
