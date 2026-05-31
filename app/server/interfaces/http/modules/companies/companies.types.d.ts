@@ -15,3 +15,16 @@ interface CompanyType {
     updated_at: string;
     deleted_at: string | null;
 }
+
+type UpdateCompanyDTO = Partial<
+    Pick<
+        CompanyType,
+        | "name"
+        | "email"
+        | "profile_image"
+        | "country"
+        | "timezone"
+        | "active"
+        | "verified_at"
+    >
+>;

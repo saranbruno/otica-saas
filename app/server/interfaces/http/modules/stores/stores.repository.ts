@@ -1,19 +1,19 @@
 import { fetchFirst, getUpdateKeysValues, query, transaction } from "../../../../providers/psql.js";
 
-export class CompaniesRepository {
-    async getAll(): Promise<CompanyType[]> {
-        return await query<CompanyType>(`
+export class StoresRepository {
+    async getAll(): Promise<StoreType[]> {
+        return await query<StoreType>(`
             SELECT *
-            FROM companies
+            FROM stores
             WHERE deleted_at IS NULL
             `,
         )
     }
 
-    async findById(id: string): Promise<CompanyType | null> {
-        return await fetchFirst<CompanyType>(`
+    async findById(id: string): Promise<StoreType | null> {
+        return await fetchFirst<StoreType>(`
             SELECT *
-            FROM companies
+            FROM stores
             WHERE id = $1
             AND deleted_at IS NULL
             LIMIT 1
@@ -22,29 +22,17 @@ export class CompaniesRepository {
         )
     }
 
-    async findByEmail(email: string): Promise<CompanyType | null> {
-        return await fetchFirst<CompanyType>(`
-            SELECT *
-            FROM companies
-            WHERE email = $1
-            AND deleted_at IS NULL
-            LIMIT 1
-            `,
-            [email]
-        )
-    }
-
     async create(
-        data: UpdateCompanyDTO
-    ): Promise<CompanyType | null> {
+        data: CreateStoreDTO
+    ): Promise<StoreType | null> {
         const columns = Object.keys(data);
         const values = Object.values(data);
 
         const placeholders = values.map((_, i) => `$${i + 1}`);
 
-        const [created] = await query<CompanyType>(
+        const [created] = await query<StoreType>(
             `
-        INSERT INTO companies (${columns.join(", ")})
+        INSERT INTO stores (${columns.join(", ")})
         VALUES (${placeholders.join(", ")})
         RETURNING *;
         `,
@@ -56,8 +44,8 @@ export class CompaniesRepository {
 
     async update(
         id: string,
-        data: UpdateCompanyDTO
-    ): Promise<CompanyType | null> {
+        data: UpdateStoreDTO
+    ): Promise<StoreType | null> {
         const entries = Object.entries(data);
 
         if (!entries.length) {
@@ -69,9 +57,9 @@ export class CompaniesRepository {
             values,
         } = getUpdateKeysValues(entries);
 
-        const [company] = await query<CompanyType>(
+        const [user] = await query<StoreType>(
             `
-            UPDATE companies
+            UPDATE stores
             SET
                 ${fields.join(", ")},
                 updated_at = timezone('utc', now())
@@ -81,16 +69,16 @@ export class CompaniesRepository {
             [...values, id]
         );
 
-        return company ?? null;
+        return user ?? null;
     }
 
     async delete(id: string) {
         await query(`
-                UPDATE companies
+                UPDATE stores
                 SET
                     deleted_at = timezone('utc', now())
                 WHERE id = $1
-            `, 
+            `,
             [id]
         )
     }

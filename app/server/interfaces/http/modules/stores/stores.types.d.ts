@@ -21,3 +21,35 @@ interface StoreType {
     updated_at: string;
     deleted_at: string | null;
 }
+
+type CreateStoreDTO = Partial<
+    Pick<
+        StoreType,
+        | "public_id"
+        | "company_id"
+        | "name"
+        | "profile_image"
+        | "zip_code"
+        | "street"
+        | "number"
+        | "district"
+        | "city"
+        | "state"
+        | "active"
+    >
+>;
+
+type UpdateStoreDTO = Partial<
+    Pick<
+        StoreType,
+        | "name"
+        | "profile_image"
+        | "zip_code"
+        | "street"
+        | "number"
+        | "district"
+        | "city"
+        | "state"
+        | "active"
+    >
+>;
