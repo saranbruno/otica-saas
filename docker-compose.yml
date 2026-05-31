@@ -3,8 +3,6 @@ name: otica-saas
 services:
   server:
     image: otica-saas:dev
-    ports:
-      - "80"
     restart: unless-stopped
     build:
       context: .
@@ -22,6 +20,21 @@ services:
       - .env
     volumes:
       - .:/var/www/html
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/html
+      - ./infra/nginx/nginx.dev.conf:/etc/nginx/conf.d/default.template
+    depends_on:
+      - server
+    networks:
+      otica-saas-net:
+        aliases:
+          - nginx
   
   rabbitmq:
     image: rabbitmq:3-management
