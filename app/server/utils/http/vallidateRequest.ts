@@ -1,6 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
 import { validationResult, type ValidationChain } from "express-validator";
 
+export type VallidateRequestType = (validator: ValidationChain[]) => (req: Request, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
+
 export default function vallidateRequest(validator: ValidationChain[]) {
     return async function (req: Request, res: Response, next: NextFunction) {
         await Promise.all(validator.map((validation) => validation.run(req)));
