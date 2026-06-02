@@ -80,6 +80,15 @@ export class StoresRepository {
                 WHERE id = $1
             `,
             [id]
-        )
+        );
+    }
+
+    async countByCompanyId(companyId: string): Promise<number> {
+        return await fetchFirst<number>(`
+            SELECT COUNT(id)
+            FROM stores
+            WHERE company_id = $1
+            `, [companyId]
+        ) ?? 0;
     }
 }

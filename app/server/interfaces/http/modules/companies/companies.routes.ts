@@ -1,5 +1,4 @@
 import groupRoutes from "../../../../utils/http/groupRoutes.js";
-import vallidateRequest from "../../../../utils/http/vallidateRequest.js";
 import { CompaniesRepository } from "./companies.repository.js";
 import { CompaniesService } from "./companies.service.js";
 import { CompaniesController } from "./companies.controller.js";

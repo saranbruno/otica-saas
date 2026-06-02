@@ -3,10 +3,10 @@
 interface UserType {
     id: string;
     public_id: string;
-    
+
     active_company_id: string | null;
     active_store_id: string | null;
-    
+
     name: string;
     email: string | null;
     phone: string | null;
@@ -19,7 +19,7 @@ interface UserType {
     deleted_at: string | null;
 }
 
-type CreateUserDTO = Partial<
+type CreateUserDTO =
     Pick<
         UserType,
         | "public_id"
@@ -30,8 +30,7 @@ type CreateUserDTO = Partial<
         | "remember_token"
         | "active_company_id"
         | "active_store_id"
-    >
->;
+    >;
 
 type UpdateUserDTO = Partial<
     Pick<

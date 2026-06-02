@@ -25,14 +25,14 @@ pool.on('error', (err) => {
 
 type QueryExecutor = Pool | PoolClient;
 
-export async function fetchFirst<T extends QueryResultRow>(
+export async function fetchFirst<T>(
     sql: string,
     params?: unknown[],
     executor: QueryExecutor = pool
 ): Promise<T | null> {
-    const [row] = await query<T>(sql, params, executor);
+    const [row] = await query(sql, params, executor);
 
-    return row ?? null;
+    return (row as T) ?? null;
 }
 
 export async function query<T extends QueryResultRow>(

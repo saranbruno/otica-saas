@@ -22,7 +22,7 @@ interface StoreType {
     deleted_at: string | null;
 }
 
-type CreateStoreDTO = Partial<
+type CreateStoreDTO =
     Pick<
         StoreType,
         | "public_id"
@@ -36,8 +36,7 @@ type CreateStoreDTO = Partial<
         | "city"
         | "state"
         | "active"
-    >
->;
+    >;
 
 type UpdateStoreDTO = Partial<
     Pick<
