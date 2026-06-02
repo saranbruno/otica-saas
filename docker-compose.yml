@@ -28,7 +28,7 @@ services:
       - "80:80"
     volumes:
       - .:/var/www/html
-      - ./infra/nginx/nginx.dev.conf:/etc/nginx/conf.d/default.template
+      - ./infra/nginx/nginx.dev.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - server
     networks:

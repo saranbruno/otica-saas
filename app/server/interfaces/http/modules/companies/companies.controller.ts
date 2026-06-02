@@ -28,8 +28,9 @@ export class CompaniesController {
 
             RequestErrorLog({
                 route: "companies_index",
-                code: code,
-                message: message,
+                code,
+                message,
+                error,
                 payload: {
                     body: req.body,
                     param: req.params,
