@@ -22,14 +22,10 @@ interface UserType {
 type CreateUserDTO =
     Pick<
         UserType,
-        | "public_id"
         | "name"
         | "email"
         | "phone"
         | "profile_image"
-        | "remember_token"
-        | "active_company_id"
-        | "active_store_id"
     >;
 
 type UpdateUserDTO = Partial<
@@ -39,8 +35,5 @@ type UpdateUserDTO = Partial<
         | "email"
         | "phone"
         | "profile_image"
-        | "remember_token"
-        | "active_company_id"
-        | "active_store_id"
     >
 >;

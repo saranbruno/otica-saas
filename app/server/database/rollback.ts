@@ -1,4 +1,4 @@
-import { pool, query } from "../providers/psql.js";
+import { pool, query, transaction } from "../providers/psql.js";
 import { migrations } from "./migrations.js";
 
 async function getLastMigration() {
@@ -29,23 +29,16 @@ async function run() {
 
     console.log(`Revertendo: ${migration.name}`);
 
-    await pool.query("BEGIN");
-
-    try {
-        await migration.down();
-
-        await query(
+    await transaction(async (client) => {
+        await migration.down(client);
+        
+        await client(
             `DELETE FROM migrations WHERE name = $1`,
             [migration.name]
         );
 
-        await pool.query("COMMIT");
-
         console.log(`Revertida: ${migration.name}`);
-    } catch (error) {
-        await pool.query("ROLLBACK");
-        throw error;
-    }
+    });
 
     await pool.end();
 }

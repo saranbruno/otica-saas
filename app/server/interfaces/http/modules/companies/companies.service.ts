@@ -15,10 +15,7 @@ export class CompaniesService {
 
     async create(data: UpdateCompanyDTO) {
         if (data.email) {
-            const companyWithEmail =
-                await this.companiesRepository.findByEmail(
-                    data.email
-                );
+            const companyWithEmail = await this.companiesRepository.findByEmail(data.email);
 
             if (companyWithEmail) throw new Error("email_already_exists");
         }

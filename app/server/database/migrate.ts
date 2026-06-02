@@ -33,12 +33,10 @@ async function run() {
 
         console.log(`Executando: ${migration.name}`);
 
-        await pool.query("BEGIN");
+        await transaction(async (client) => {
+            await migration.up(client);
 
-        await transaction(async (query) => {
-            await migration.up(query);
-
-            await query(
+            await client(
                 `
                 INSERT INTO migrations (name)
                 VALUES ($1)
