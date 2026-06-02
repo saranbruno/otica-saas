@@ -2,6 +2,9 @@ import { createServer } from "http";
 import dotenv from 'dotenv';
 import cors from 'cors';
 import express from 'express';
+import CompaniesRoutes from "./interfaces/http/modules/companies/companies.routes.js";
+import StoresRoutes from "./interfaces/http/modules/stores/stores.routes.js";
+import UsersRoutes from "./interfaces/http/modules/users/users.routes.js";
 
 dotenv.config();
 
@@ -20,7 +23,9 @@ export default async function setupApi(): Promise<void> {
     api.use(express.json());
 
     const services: (() => Promise<void>)[] = [
-        
+        CompaniesRoutes,
+        StoresRoutes,
+        UsersRoutes,
     ];
 
     for (const service of services) {
