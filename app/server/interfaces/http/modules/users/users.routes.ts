@@ -1,4 +1,5 @@
 import groupRoutes from "../../../../utils/http/groupRoutes.js";
+import { AuthMiddleware } from "../../middlewares/AuthMiddleware.js";
 import { UsersController } from "./users.controller.js";
 import { UsersRepository } from "./users.repository.js";
 import { UsersService } from "./users.service.js";
@@ -10,7 +11,11 @@ const controller = new UsersController(service);
 
 export default async function UsersRoutes() {
     groupRoutes('/users', (users) => {
-        users.get('/', controller.index);
+        users.use(AuthMiddleware),
+
+        users.get('/',
+            controller.index
+        );
         users.post('/',
             usersValidator.store,
             controller.store

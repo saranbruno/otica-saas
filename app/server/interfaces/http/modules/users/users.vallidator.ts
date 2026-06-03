@@ -27,13 +27,22 @@ export const usersValidator = {
         body("profile_image")
             .optional()
             .isString(),
+
+        body("password")
+            .notEmpty()
+            .isString()
+            .isLength({ min: 6, max: 30 })
+            .matches(/[A-Z]/)
+            .withMessage("A senha deve conter pelo menos uma letra maiúscula")
+            .matches(/[0-9]/)
+            .withMessage("A senha deve conter pelo menos um número"),
     ]),
 
     update: vallidateRequest([
         param("id")
             .isUUID(7)
             .withMessage("ID inválido"),
-            
+
         body('name')
             .optional()
             .isString()
@@ -51,6 +60,15 @@ export const usersValidator = {
         body("profile_image")
             .optional()
             .isString(),
+
+        body("password")
+            .optional()
+            .isString()
+            .isLength({ min: 6, max: 30 })
+            .matches(/[A-Z]/)
+            .withMessage("A senha deve conter pelo menos uma letra maiúscula")
+            .matches(/[0-9]/)
+            .withMessage("A senha deve conter pelo menos um número")
     ]),
 
     destroy: vallidateRequest([

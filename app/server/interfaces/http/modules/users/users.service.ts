@@ -1,6 +1,5 @@
 import type { UsersRepository } from "./users.repository.js";
-
-
+import bcrypt from "bcrypt";
 
 export class UsersService {
     constructor(
@@ -25,6 +24,8 @@ export class UsersService {
 
             if (userWithMail) throw new Error("email_already_exists");
         }
+
+        data.password = await bcrypt.hash(data.password, 14);
         
         return this.usersRespository.create(data);
     }
@@ -34,6 +35,10 @@ export class UsersService {
             const userWithMail = await this.usersRespository.findByEmail(data.email);
     
             if (userWithMail && userWithMail.id !== id) throw new Error("email_already_exists");
+        }
+
+        if (data.password) {
+            data.password = await bcrypt.hash(data.password, 14);
         }
         
         return this.usersRespository.update(id, data);
