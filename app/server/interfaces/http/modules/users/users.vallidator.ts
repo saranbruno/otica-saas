@@ -10,6 +10,10 @@ export const usersValidator = {
     ]),
 
     store: vallidateRequest([
+        body("company_id")
+            .isUUID(7)
+            .withMessage("ID inválido"),
+
         body('name')
             .notEmpty()
             .isString()

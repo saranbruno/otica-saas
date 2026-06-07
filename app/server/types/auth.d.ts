@@ -1,8 +1,8 @@
 
 type JwtPayload = {
     sub: string;
-    company_id?: string;
-    store_id?: string;
+    company_id?: string | null;
+    store_id?: string | null;
 };
 
 declare namespace Express {
@@ -13,6 +13,7 @@ declare namespace Express {
 
 type AuthUserReqType = {
     id: string;
+    company_id: string | null;
     store_id: string | null;
 }
 

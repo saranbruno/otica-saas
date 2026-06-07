@@ -4,6 +4,8 @@ interface UserType {
     id: string;
     public_id: string;
 
+    company_id: string;
+
     name: string;
     email: string | null;
     phone: string | null;
@@ -18,6 +20,7 @@ interface UserType {
 type CreateUserDTO =
     Pick<
         UserType,
+        | "company_id"
         | "name"
         | "email"
         | "phone"

@@ -31,6 +31,7 @@ export class AuthenticationController {
             const accessToken = jwt.sign(
                 {
                     sub: user.id,
+                    company_id: user.company_id,
                     store_id: null,
                 },
                 JWT_SECRET,
@@ -48,6 +49,7 @@ export class AuthenticationController {
                     user: {
                         id: user.id,
                         public_id: user.public_id,
+                        company_id: user.company_id,
                         name: user.name,
                         email: user.email,
                         profile_image: user.profile_image,
@@ -111,6 +113,7 @@ export class AuthenticationController {
             const accessToken = jwt.sign(
                 {
                     sub: user.id,
+                    company_id: user.company_id,
                     store_id: null,
                 },
                 JWT_SECRET,
@@ -139,6 +142,7 @@ export class AuthenticationController {
                     user: {
                         id: user.id,
                         public_id: user.public_id,
+                        company_id: user.company_id,
                         name: user.name,
                         email: user.email,
                         profile_image: user.profile_image,
@@ -194,10 +198,20 @@ export class AuthenticationController {
                 return;
             }
 
+            const user = await this.userService.findById(dbToken.user_id);
+
+            if (!user) {
+                res.status(401).json({
+                    result: false,
+                    message: "Token inválido.",
+                });
+                return;
+            }
+
             const accessToken = jwt.sign(
                 {
                     sub: dbToken.user_id,
-                    company_id: null,
+                    company_id: user.company_id,
                     store_id: null,
                 },
                 JWT_SECRET,
@@ -305,6 +319,7 @@ export class AuthenticationController {
                 "me": {
                     "user": {
                         id: dbUser?.public_id,
+                        company_id: dbUser?.company_id,
                         name: dbUser?.name,
                         email: dbUser?.email,
                         phone: dbUser?.phone,

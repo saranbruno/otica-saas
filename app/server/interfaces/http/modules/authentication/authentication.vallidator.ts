@@ -26,6 +26,10 @@ export const authenticationVallidator = {
     ]),
 
     register: vallidateRequest([
+        body("company_id")
+            .isUUID(7)
+            .withMessage("ID inválido"),
+
         body('name')
             .notEmpty()
             .isString()

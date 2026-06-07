@@ -44,21 +44,36 @@ export class AuthenticationService {
 
             if (existingUser[0]) throw new Error("email_already_exists");
 
+            const company = await query<UserType>(
+                `
+                SELECT *
+                FROM companies
+                WHERE id = $1
+                AND deleted_at IS NULL
+                LIMIT 1
+                `,
+                [data.company_id]
+            );
+
+            if (!company[0]) throw new Error("invalid_company_id");
+
             const hashedPassword = await bcrypt.hash(data.password, 14);
 
             const [user] = await query<UserType>(
                 `
                 INSERT INTO users (
+                    company_id,
                     name,
                     email,
                     phone,
                     profile_image,
                     password
                 )
-                VALUES ($1, $2, $3, $4, $5)
+                VALUES ($1, $2, $3, $4, $5, $6)
                 RETURNING *
                 `,
                 [
+                    data.company_id,
                     data.name,
                     data.email,
                     data.phone,
