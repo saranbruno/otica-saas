@@ -31,7 +31,6 @@ export class AuthenticationController {
             const accessToken = jwt.sign(
                 {
                     sub: user.id,
-                    company_id: null,
                     store_id: null,
                 },
                 JWT_SECRET,
@@ -112,7 +111,6 @@ export class AuthenticationController {
             const accessToken = jwt.sign(
                 {
                     sub: user.id,
-                    company_id: null,
                     store_id: null,
                 },
                 JWT_SECRET,

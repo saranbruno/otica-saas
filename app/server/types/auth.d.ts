@@ -13,7 +13,6 @@ declare namespace Express {
 
 type AuthUserReqType = {
     id: string;
-    company_id: string | null;
     store_id: string | null;
 }
 
