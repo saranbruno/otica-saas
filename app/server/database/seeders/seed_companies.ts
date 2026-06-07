@@ -1,4 +1,4 @@
-import { pool, query } from "../../providers/psql.js";
+import { query } from "../../providers/psql.js";
 
 export async function seed() {
     await query(`
@@ -41,7 +41,17 @@ export async function seed() {
             'America/New_York',
             true,
             now()
-        );
+        )
+        ON CONFLICT (id) DO UPDATE SET
+            name = EXCLUDED.name,
+            email = EXCLUDED.email,
+            profile_image = EXCLUDED.profile_image,
+            country = EXCLUDED.country,
+            timezone = EXCLUDED.timezone,
+            active = EXCLUDED.active,
+            verified_at = EXCLUDED.verified_at,
+            updated_at = timezone('utc', now()),
+            deleted_at = NULL;
         `
-    )
+    );
 }

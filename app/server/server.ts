@@ -5,7 +5,8 @@ import express from 'express';
 import CompaniesRoutes from "./interfaces/http/modules/companies/companies.routes.js";
 import StoresRoutes from "./interfaces/http/modules/stores/stores.routes.js";
 import UsersRoutes from "./interfaces/http/modules/users/users.routes.js";
-import AuthenticationRoutes from "./interfaces/http/modules/authentication/authentication.routes.js"
+import AuthenticationRoutes from "./interfaces/http/modules/authentication/authentication.routes.js";
+import UserStoreAccessRoutes from "./interfaces/http/modules/user_store_access/user_store_access.routes.js";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ export default async function setupApi(): Promise<void> {
         CompaniesRoutes,
         StoresRoutes,
         UsersRoutes,
+        UserStoreAccessRoutes,
         AuthenticationRoutes,
     ];
 

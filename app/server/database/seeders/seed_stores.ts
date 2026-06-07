@@ -1,4 +1,4 @@
-import { pool, query } from "../../providers/psql.js";
+import { query } from "../../providers/psql.js";
 
 export async function seed() {
     await query(`
@@ -57,7 +57,35 @@ export async function seed() {
             'New York',
             'NY',
             true
-        );
+        ),
+        (
+            'aaaaaaaa-aaaa-7aaa-8aaa-aaaaaaaaaaaa',
+            'TECH-SP-002',
+            '11111111-1111-7111-8111-111111111111',
+            'Tech Solutions Campinas',
+            'https://cdn.example.com/stores/tech-campinas.png',
+            '13010-000',
+            'Av. Francisco Glicério',
+            '900',
+            'Centro',
+            'Campinas',
+            'SP',
+            true
+        )
+        ON CONFLICT (id) DO UPDATE SET
+            public_id = EXCLUDED.public_id,
+            company_id = EXCLUDED.company_id,
+            name = EXCLUDED.name,
+            profile_image = EXCLUDED.profile_image,
+            zip_code = EXCLUDED.zip_code,
+            street = EXCLUDED.street,
+            number = EXCLUDED.number,
+            district = EXCLUDED.district,
+            city = EXCLUDED.city,
+            state = EXCLUDED.state,
+            active = EXCLUDED.active,
+            updated_at = timezone('utc', now()),
+            deleted_at = NULL;
         `
-    )
+    );
 }

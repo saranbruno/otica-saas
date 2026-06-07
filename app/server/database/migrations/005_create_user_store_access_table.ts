@@ -11,11 +11,10 @@ export const migration: Migration = {
                 user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
                 store_id UUID NOT NULL REFERENCES stores(id) ON DELETE CASCADE,
 
-                created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now())
-            );
+                created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc', now()),
 
-            CREATE INDEX idx_user_store_access_user_id
-            ON user_store_access(user_id);
+                CONSTRAINT user_store_access_user_id_store_id_unique UNIQUE (user_id, store_id)
+            );
 
             CREATE INDEX idx_user_store_access_store_id
             ON user_store_access(store_id);
