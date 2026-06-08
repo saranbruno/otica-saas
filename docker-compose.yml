@@ -21,6 +21,23 @@ services:
     volumes:
       - .:/var/www/html
 
+  client:
+    image: otica-saas-client:dev
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./infra/docker/Dockerfile.client
+    ports:
+      - "5173:5173"
+    env_file:
+      - .env
+    volumes:
+      - .:/var/www/html
+    networks:
+      otica-saas-net:
+        aliases:
+          - client
+
   nginx:
     image: nginx:alpine
     restart: unless-stopped
