@@ -137,8 +137,8 @@ export class AuthenticationController {
                 result: true,
                 message: "Login realizado com sucesso.",
                 data: {
-                    access_token: accessToken,
-                    refresh_token: refreshToken,
+                    accessToken: accessToken,
+                    refreshToken: refreshToken,
                     user: {
                         id: user.id,
                         public_id: user.public_id,
